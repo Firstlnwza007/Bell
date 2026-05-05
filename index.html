@@ -41,7 +41,6 @@ body{
   overflow-x:hidden;
 }
 
-/* BG ambient */
 body::before{
   content:'';
   position:fixed;inset:0;
@@ -51,7 +50,6 @@ body::before{
   pointer-events:none;z-index:0;
 }
 
-/* ── NAV TABS ── */
 .nav{
   position:sticky;top:0;z-index:100;
   background:rgba(14,15,20,0.92);
@@ -83,19 +81,16 @@ body::before{
 
 .app{position:relative;z-index:1;max-width:780px;margin:0 auto;padding:1.4rem 1rem 5rem;}
 
-/* ── PAGES ── */
 .page{display:none;animation:fadeIn 0.25s ease;}
 .page.active{display:block;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── SECTION TITLE ── */
 .sec-title{
   font-size:0.68rem;font-weight:600;
   color:var(--muted);letter-spacing:0.12em;
   text-transform:uppercase;margin-bottom:0.8rem;
 }
 
-/* ── CARD ── */
 .card{
   background:var(--card);
   border:1px solid var(--border);
@@ -104,7 +99,6 @@ body::before{
   margin-bottom:1rem;
 }
 
-/* ── HOME PAGE ── */
 .home-header{
   display:flex;justify-content:space-between;align-items:flex-start;
   margin-bottom:1.6rem;
@@ -129,7 +123,6 @@ body::before{
 }
 .clock-label{font-size:0.62rem;color:var(--muted);}
 
-/* schedule strip */
 .today-strip{
   background:var(--card);border:1px solid var(--border);
   border-radius:14px;padding:1rem 1.2rem;
@@ -157,7 +150,6 @@ body::before{
 .period-pill.current .pp-dot{display:block;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
 
-/* quick stats */
 .quick-stats{display:flex;gap:0.8rem;margin-bottom:1rem;}
 .qs{
   flex:1;background:var(--card);border:1px solid var(--border);
@@ -169,7 +161,6 @@ body::before{
 .qs.soon .qs-num{color:var(--yellow);}
 .qs.done .qs-num{color:var(--green);}
 
-/* upcoming tasks */
 .upcoming-item{
   display:flex;align-items:center;gap:0.9rem;
   padding:0.8rem 0;border-bottom:1px solid var(--border);
@@ -189,7 +180,6 @@ body::before{
   flex-shrink:0;
 }
 
-/* ── SCHEDULE PAGE ── */
 .sched-day{margin-bottom:1.4rem;}
 .sched-day-title{
   font-size:0.72rem;font-weight:700;letter-spacing:0.1em;
@@ -216,7 +206,6 @@ body::before{
 .sched-row.break-row .sched-sub{color:var(--muted);font-weight:400;font-size:0.75rem;}
 .sched-row.homeroom .sched-content{background:rgba(122,162,247,0.05);}
 
-/* ── HOMEWORK PAGE ── */
 .hw-filters{display:flex;gap:0.5rem;margin-bottom:1.2rem;flex-wrap:wrap;}
 .hw-filter{
   font-size:0.72rem;padding:0.3rem 0.8rem;
@@ -285,6 +274,11 @@ body::before{
 .hw-due-tag.ok{background:rgba(158,206,106,0.1);color:var(--green);}
 .hw-note{font-size:0.72rem;color:var(--muted);margin-top:0.3rem;line-height:1.5;}
 
+.hw-group-title{
+  display:flex;align-items:center;
+  margin-bottom:0.5rem;padding-left:0.2rem;
+}
+
 .hw-img-thumb{
   width:48px;height:48px;border-radius:8px;
   object-fit:cover;border:1px solid var(--border2);
@@ -299,7 +293,6 @@ body::before{
 .hw-item:hover .hw-del{opacity:1;}
 .hw-del:hover{color:var(--red);}
 
-/* ── MODAL ── */
 .modal-overlay{
   position:fixed;inset:0;
   background:rgba(0,0,0,0.7);
@@ -376,7 +369,6 @@ body::before{
 }
 .btn-save:hover{opacity:0.85;}
 
-/* ── ROUTINE PAGE ── */
 .routine-block{
   display:flex;align-items:center;gap:0.9rem;
   background:var(--card);border:1px solid var(--border);
@@ -403,7 +395,6 @@ body::before{
 .rb-tag.sleep{background:rgba(86,95,137,0.3);color:var(--muted);}
 .rb-tag.extra{background:rgba(255,158,100,0.1);color:var(--orange);}
 
-/* TCAS section */
 .tcas-card{
   background:linear-gradient(135deg,rgba(122,162,247,0.08),rgba(187,154,247,0.06));
   border:1px solid rgba(122,162,247,0.25);
@@ -424,7 +415,6 @@ body::before{
 .tcas-name{color:var(--text2);}
 .tcas-date{color:var(--yellow);font-weight:600;font-size:0.75rem;}
 
-/* image lightbox */
 .lightbox{
   position:fixed;inset:0;background:rgba(0,0,0,0.92);
   z-index:1000;display:none;
@@ -434,21 +424,22 @@ body::before{
 .lightbox.open{display:flex;}
 .lightbox img{max-width:95vw;max-height:90vh;border-radius:8px;}
 
-/* empty */
 .empty-state{
   text-align:center;padding:2.5rem 1rem;
   color:var(--muted);font-size:0.82rem;line-height:2;
 }
 .empty-icon{font-size:2.2rem;margin-bottom:0.5rem;}
 
-/* notify badge */
 .notify-dot{
   width:8px;height:8px;border-radius:50%;
   background:var(--red);display:inline-block;
   margin-left:4px;vertical-align:middle;
 }
 
-/* scrollbar */
+/* Force 24hr display */
+input[type="time"]::-webkit-datetime-edit-ampm-field{display:none;}
+input[type="time"]{-webkit-appearance:none;}
+
 ::-webkit-scrollbar{width:4px;height:4px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px;}
@@ -456,7 +447,6 @@ body::before{
 </head>
 <body>
 
-<!-- NAV -->
 <nav class="nav">
   <button class="nav-tab active" onclick="showPage('home')">🏠 หน้าแรก</button>
   <button class="nav-tab" onclick="showPage('schedule')">📅 ตารางเรียน</button>
@@ -466,9 +456,8 @@ body::before{
 
 <div class="app">
 
-<!-- ═══════════ HOME ═══════════ -->
+<!-- HOME -->
 <div id="page-home" class="page active">
-
   <div class="home-header">
     <div>
       <div class="home-greeting"><span class="hi">สวัสดี!</span> 👋<br>วันนี้เป็นยังไงบ้าง?</div>
@@ -480,13 +469,11 @@ body::before{
     </div>
   </div>
 
-  <!-- Today schedule strip -->
   <div class="sec-title">📖 ตารางวันนี้</div>
   <div class="today-strip">
     <div class="strip-periods" id="today-strip"></div>
   </div>
 
-  <!-- Quick stats -->
   <div class="quick-stats">
     <div class="qs urgent">
       <div class="qs-num" id="stat-urgent">0</div>
@@ -502,24 +489,21 @@ body::before{
     </div>
   </div>
 
-  <!-- Upcoming -->
   <div class="card">
     <div class="sec-title">📋 งานที่ต้องส่ง</div>
     <div id="upcoming-list">
       <div class="empty-state"><div class="empty-icon">🎉</div>ยังไม่มีงาน<br>ไปเพิ่มที่แท็บ "การบ้าน" ได้เลย!</div>
     </div>
   </div>
-
 </div>
 
-<!-- ═══════════ SCHEDULE ═══════════ -->
+<!-- SCHEDULE -->
 <div id="page-schedule" class="page">
   <div id="sched-container"></div>
 </div>
 
-<!-- ═══════════ HOMEWORK ═══════════ -->
+<!-- HOMEWORK -->
 <div id="page-homework" class="page">
-
   <div class="hw-filters">
     <button class="hw-filter active" onclick="filterHW('all',this)">ทั้งหมด</button>
     <button class="hw-filter" onclick="filterHW('pending',this)">ยังไม่ส่ง</button>
@@ -529,14 +513,11 @@ body::before{
   </div>
 
   <button class="hw-add-btn" onclick="openModal()">+ เพิ่มงาน / การบ้าน</button>
-
   <div id="hw-list"></div>
 </div>
 
-<!-- ═══════════ ROUTINE ═══════════ -->
+<!-- ROUTINE -->
 <div id="page-routine" class="page">
-
-  <!-- TCAS -->
   <div class="tcas-card">
     <div class="tcas-title">🎯 TCAS / A-LEVEL ปฏิทิน</div>
     <div class="tcas-item"><span class="tcas-name">TCAS รอบ Portfolio</span><span class="tcas-date">ธ.ค. 68 – ม.ค. 69</span></div>
@@ -545,74 +526,63 @@ body::before{
     <div class="tcas-item"><span class="tcas-name">TCAS รอบ Admission</span><span class="tcas-date">เม.ย. – พ.ค. 69</span></div>
   </div>
 
-  <!-- Daily Routine -->
   <div class="sec-title">กิจวัตรประจำวัน (วันธรรมดา)</div>
 
   <div class="routine-block">
-    <div class="rb-time">06:30</div>
-    <div class="rb-icon">⏰</div>
+    <div class="rb-time">06:30</div><div class="rb-icon">⏰</div>
     <div class="rb-info"><div class="rb-title">ตื่นนอน</div><div class="rb-note">อาบน้ำ แต่งตัว กินข้าวเช้า</div></div>
     <div class="rb-tag school">โรงเรียน</div>
   </div>
   <div class="routine-block">
-    <div class="rb-time">07:00</div>
-    <div class="rb-icon">🔔</div>
+    <div class="rb-time">07:00</div><div class="rb-icon">🔔</div>
     <div class="rb-info"><div class="rb-title">แจ้งเตือน: เช็คงานวันนี้</div><div class="rb-note">ดูงานที่ต้องส่ง / ของที่ต้องเอาไปโรงเรียน</div></div>
     <div class="rb-tag school">สำคัญ</div>
   </div>
   <div class="routine-block">
-    <div class="rb-time">07:40</div>
-    <div class="rb-icon">🚌</div>
+    <div class="rb-time">07:40</div><div class="rb-icon">🚌</div>
     <div class="rb-info"><div class="rb-title">ออกจากบ้าน</div><div class="rb-note">เดินทาง ~20 นาที ถึงก่อน 08:00</div></div>
     <div class="rb-tag school">โรงเรียน</div>
   </div>
   <div class="routine-block">
-    <div class="rb-time">08:00</div>
-    <div class="rb-icon">🏫</div>
+    <div class="rb-time">08:00</div><div class="rb-icon">🏫</div>
     <div class="rb-info"><div class="rb-title">เรียน ม.6/6</div><div class="rb-note">ตามตารางเรียน</div></div>
     <div class="rb-tag school">โรงเรียน</div>
   </div>
   <div class="routine-block">
-    <div class="rb-time">15:30</div>
-    <div class="rb-icon">🔚</div>
+    <div class="rb-time">15:30</div><div class="rb-icon">🔚</div>
     <div class="rb-info"><div class="rb-title">เลิกเรียน</div><div class="rb-note">วันจันทร์ & ศุกร์ → ไปเรียนพิเศษคณิต</div></div>
     <div class="rb-tag extra">กิจกรรม</div>
   </div>
   <div class="routine-block">
-    <div class="rb-time">17:00</div>
-    <div class="rb-icon">➗</div>
+    <div class="rb-time">17:00</div><div class="rb-icon">➗</div>
     <div class="rb-info"><div class="rb-title">เรียนพิเศษคณิตศาสตร์</div><div class="rb-note">จันทร์ & ศุกร์ เท่านั้น 17:00–19:00</div></div>
     <div class="rb-tag extra">เรียนพิเศษ</div>
   </div>
   <div class="routine-block">
-    <div class="rb-time">19:00</div>
-    <div class="rb-icon">🍜</div>
+    <div class="rb-time">19:00</div><div class="rb-icon">🍜</div>
     <div class="rb-info"><div class="rb-title">กินข้าวเย็น (วัน จ&ศ)</div><div class="rb-note">หลังเรียนพิเศษ</div></div>
     <div class="rb-tag free">พักผ่อน</div>
   </div>
   <div class="routine-block">
-    <div class="rb-time">21:00</div>
-    <div class="rb-icon">🏠</div>
+    <div class="rb-time">21:00</div><div class="rb-icon">🏠</div>
     <div class="rb-info"><div class="rb-title">ถึงบ้าน</div><div class="rb-note">อาบน้ำ พัก → เริ่มทำการบ้าน</div></div>
     <div class="rb-tag study">ทบทวน</div>
   </div>
   <div class="routine-block">
-    <div class="rb-time">21:30</div>
-    <div class="rb-icon">📖</div>
+    <div class="rb-time">21:30</div><div class="rb-icon">📖</div>
     <div class="rb-info"><div class="rb-title">ทำการบ้าน / อ่านหนังสือ</div><div class="rb-note">ทำจนหมด ถ้าน้อยอาจเล่นเกมก่อนนอน</div></div>
     <div class="rb-tag study">เรียน</div>
   </div>
   <div class="routine-block">
-    <div class="rb-time">22:00</div>
-    <div class="rb-icon">😴</div>
+    <div class="rb-time">22:00</div><div class="rb-icon">😴</div>
     <div class="rb-info"><div class="rb-title">เข้านอน (ถ้าไม่มีงาน)</div><div class="rb-note">ถ้ามีงานเยอะ อาจดึกกว่านี้</div></div>
     <div class="rb-tag sleep">นอน</div>
   </div>
-
 </div>
+
 </div><!-- end app -->
 
-<!-- ═══════════ ADD HOMEWORK MODAL ═══════════ -->
+<!-- MODAL -->
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal">
     <div class="modal-title">+ เพิ่มงาน / การบ้าน</div>
@@ -643,8 +613,11 @@ body::before{
     </div>
 
     <div class="form-group">
-      <label class="form-label">วันที่ต้องส่ง *</label>
-      <input class="form-input" id="hw-due" type="date" />
+      <label class="form-label">วันที่และเวลาที่ต้องส่ง *</label>
+      <div style="display:flex;gap:10px;">
+        <input class="form-input" id="hw-due" type="date" style="flex:2;" />
+        <input class="form-input" id="hw-due-time" type="text" placeholder="13:00" maxlength="5" style="flex:1;" oninput="formatTimeInput(this)" />
+      </div>
     </div>
 
     <div class="form-group">
@@ -683,7 +656,6 @@ body::before{
 </div>
 
 <script>
-// ─── TIMETABLE DATA ───
 const TIMETABLE = {
   จันทร์: [
     {slot:0, time:'07:30-08:20', type:'homeroom', sub:'โฮมรูม / ครูที่ปรึกษา', teacher:'', room:''},
@@ -744,26 +716,20 @@ const TIMETABLE = {
 };
 
 const DAYS_TH = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสฯ','ศุกร์','เสาร์'];
+const MONTH_TH = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+const DAY_LONG = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+const DAY_KEY  = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสฯ','ศุกร์','เสาร์'];
 
-// ─── STATE ───
 let homeworks = JSON.parse(localStorage.getItem('hw_data') || '[]');
 let selectedPrio = 'soon';
 let hwFilter = 'all';
-let pendingImages = []; // base64
-
-// ─── HELPERS ───
-const MONTH_TH = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
-const DAY_LONG = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
-// Map JS getDay() index → TIMETABLE keys
-const DAY_KEY  = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสฯ','ศุกร์','เสาร์'];
+let pendingImages = [];
 
 function toMinutes(timeStr) {
-  // timeStr like "08:20"
   const [h, m] = timeStr.split(':').map(Number);
   return h * 60 + m;
 }
 function periodStartEnd(p) {
-  // p.time like "08:20-09:10"
   const [s, e] = p.time.split('-');
   return { start: toMinutes(s), end: toMinutes(e) };
 }
@@ -772,35 +738,27 @@ function nowMinutes() {
   return n.getHours() * 60 + n.getMinutes();
 }
 
-// ─── CLOCK (updates every second) ───
 function updateClock() {
   const now = new Date();
-  // HH:MM real local time
   const hh = String(now.getHours()).padStart(2,'0');
   const mm = String(now.getMinutes()).padStart(2,'0');
   document.getElementById('live-clock').textContent = `${hh}:${mm}`;
-
-  // Thai date string with Buddhist year
   document.getElementById('home-date').textContent =
     `วัน${DAY_LONG[now.getDay()]}ที่ ${now.getDate()} ${MONTH_TH[now.getMonth()]} ${now.getFullYear()+543}`;
 }
 setInterval(updateClock, 1000);
 updateClock();
 
-// ─── TODAY STRIP (re-renders every minute so current-pill updates live) ───
 function renderTodayStrip() {
-  const dayIdx = new Date().getDay();          // 0=Sun … 6=Sat
-  const dayName = DAY_KEY[dayIdx];             // map to TIMETABLE key
+  const dayIdx = new Date().getDay();
+  const dayName = DAY_KEY[dayIdx];
   const periods  = TIMETABLE[dayName];
   const strip    = document.getElementById('today-strip');
-
   if (!periods) {
     strip.innerHTML = '<div style="color:var(--muted);font-size:0.8rem;padding:0.5rem">วันนี้หยุดเรียน 🎉</div>';
     return;
   }
-
   const nm = nowMinutes();
-
   strip.innerHTML = periods.map(p => {
     const {start, end} = periodStartEnd(p);
     const isCurrent = nm >= start && nm < end;
@@ -813,16 +771,12 @@ function renderTodayStrip() {
       <div class="pp-teacher">${p.teacher||''}</div>
     </div>`;
   }).join('');
-
-  // Scroll the current pill into view automatically
   const cur = strip.querySelector('.period-pill.current');
   if (cur) cur.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
 }
 renderTodayStrip();
-// Re-check every 60 s so the highlighted pill updates when a period changes
 setInterval(renderTodayStrip, 60000);
 
-// ─── SCHEDULE RENDER ───
 function renderSchedule() {
   const todayKey = DAY_KEY[new Date().getDay()];
   const nm       = nowMinutes();
@@ -852,10 +806,8 @@ function renderSchedule() {
   }).join('');
 }
 renderSchedule();
-// Re-render schedule page every minute too (so ▶ moves to next period)
 setInterval(renderSchedule, 60000);
 
-// ─── URGENCY CALC ───
 function getUrgency(dueStr) {
   if (!dueStr) return 'ok';
   const diff = (new Date(dueStr) - new Date()) / 86400000;
@@ -864,27 +816,27 @@ function getUrgency(dueStr) {
   if (diff <= 5) return 'soon';
   return 'ok';
 }
-function daysLeft(dueStr) {
+function daysLeft(dueStr, dueTime) {
   if (!dueStr) return '';
-  const diff = Math.ceil((new Date(dueStr) - new Date()) / 86400000);
-  if (diff < 0) return 'เลยกำหนด!';
-  if (diff === 0) return 'วันนี้!';
-  if (diff === 1) return 'พรุ่งนี้!';
-  return `อีก ${diff} วัน`;
+  const dueDate = dueTime ? new Date(dueStr + 'T' + dueTime) : new Date(dueStr + 'T23:59:00');
+  const diffMs = dueDate - new Date();
+  if (diffMs < 0) return 'เลยกำหนด!';
+  const totalMins = Math.floor(diffMs / 60000);
+  const days  = Math.floor(totalMins / 1440);
+  const hours = Math.floor((totalMins % 1440) / 60);
+  if (days === 0 && hours === 0) return 'อีกไม่ถึงชั่วโมง!';
+  if (days === 0) return `อีก ${hours} ชม.`;
+  if (hours === 0) return `อีก ${days} วัน`;
+  return `อีก ${days} วัน ${hours} ชม.`;
 }
 
-// ─── STATS ───
 function updateStats() {
   const pending = homeworks.filter(h => !h.done);
-  const urgent = pending.filter(h => getUrgency(h.due) === 'urgent').length;
-  const soon = pending.filter(h => getUrgency(h.due) === 'soon').length;
-  const done = homeworks.filter(h => h.done).length;
-  document.getElementById('stat-urgent').textContent = urgent;
-  document.getElementById('stat-soon').textContent = soon;
-  document.getElementById('stat-done').textContent = done;
+  document.getElementById('stat-urgent').textContent = pending.filter(h => getUrgency(h.due) === 'urgent').length;
+  document.getElementById('stat-soon').textContent   = pending.filter(h => getUrgency(h.due) === 'soon').length;
+  document.getElementById('stat-done').textContent   = homeworks.filter(h => h.done).length;
 }
 
-// ─── UPCOMING ───
 function renderUpcoming() {
   const list = document.getElementById('upcoming-list');
   const pending = homeworks.filter(h => !h.done)
@@ -897,30 +849,33 @@ function renderUpcoming() {
   list.innerHTML = pending.map(h => {
     const urg = getUrgency(h.due);
     const colors = {urgent:'var(--red)',soon:'var(--yellow)',ok:'var(--green)'};
-    const bgs = {urgent:'rgba(247,118,142,0.1)',soon:'rgba(224,175,104,0.1)',ok:'rgba(158,206,106,0.08)'};
+    const bgs    = {urgent:'rgba(247,118,142,0.1)',soon:'rgba(224,175,104,0.1)',ok:'rgba(158,206,106,0.08)'};
+    const timeStr = h.dueTime ? ' ' + h.dueTime : '';
     return `<div class="upcoming-item">
       <div class="ui-badge" style="background:${bgs[urg]};color:${colors[urg]}">📋</div>
       <div class="ui-info">
         <div class="ui-title">${h.name}</div>
-        <div class="ui-sub">${h.subject||'ไม่ระบุวิชา'} • ${h.due||'ไม่ระบุวัน'}</div>
+        <div class="ui-sub">${h.subject||'ไม่ระบุวิชา'} • ${h.due||'ไม่ระบุวัน'}${timeStr}</div>
       </div>
-      <div class="ui-due ${urg}" style="background:${bgs[urg]};color:${colors[urg]};border-radius:7px;padding:0.25rem 0.6rem;font-size:0.7rem;font-weight:700">${daysLeft(h.due)}</div>
+      <div class="ui-due ${urg}" style="background:${bgs[urg]};color:${colors[urg]};border-radius:7px;padding:0.25rem 0.6rem;font-size:0.7rem;font-weight:700">${daysLeft(h.due, h.dueTime)}</div>
     </div>`;
   }).join('');
 }
 
-// ─── HW RENDER ───
 function renderHW() {
   const list = document.getElementById('hw-list');
   let items = [...homeworks];
   if (hwFilter === 'pending') items = items.filter(h => !h.done);
   else if (hwFilter === 'done') items = items.filter(h => h.done);
   else if (hwFilter === 'urgent') items = items.filter(h => !h.done && getUrgency(h.due)==='urgent');
-  else if (hwFilter === 'soon') items = items.filter(h => !h.done && getUrgency(h.due)==='soon');
+  else if (hwFilter === 'soon')   items = items.filter(h => !h.done && getUrgency(h.due)==='soon');
 
+  // เรียงใกล้ส่งขึ้นบน, งานส่งแล้วลงล่าง
   items.sort((a,b) => {
     if (a.done !== b.done) return a.done ? 1 : -1;
-    return new Date(a.due) - new Date(b.due);
+    const aDate = a.due ? new Date(a.due + (a.dueTime ? 'T'+a.dueTime : 'T23:59')) : new Date('9999');
+    const bDate = b.due ? new Date(b.due + (b.dueTime ? 'T'+b.dueTime : 'T23:59')) : new Date('9999');
+    return aDate - bDate;
   });
 
   if (!items.length) {
@@ -928,28 +883,57 @@ function renderHW() {
     return;
   }
 
-  list.innerHTML = items.map(h => {
-    const urg = h.done ? 'ok' : getUrgency(h.due);
-    const tagCls = h.done ? 'ok' : urg;
-    const tagText = h.done ? '✓ ส่งแล้ว' : daysLeft(h.due);
-    const imgHTML = h.images && h.images.length
-      ? `<img src="${h.images[0]}" class="hw-img-thumb" onclick="openLightbox('${h.images[0]}')" />`
-      : '';
-    return `<div class="hw-item ${h.done?'done-item':''}" data-urgency="${urg}" data-id="${h.id}">
-      <div class="hw-check" onclick="toggleHW(${h.id})">${h.done?'✓':''}</div>
-      <div class="hw-body">
-        <div class="hw-title">${h.name}</div>
-        <div class="hw-meta">
-          ${h.subject?`<span class="hw-subject">${h.subject.split(' ')[0]}</span>`:''}
-          <span class="hw-due-tag ${tagCls}">${tagText}</span>
-          ${h.due?`<span style="font-size:0.65rem;color:var(--muted)">${h.due}</span>`:''}
+  // จัดกลุ่มตามวิชา โดยเรียงกลุ่มตามงานใกล้ส่งที่สุดในกลุ่ม
+  const groups = {};
+  items.forEach(h => {
+    const key = h.subject || 'ไม่ระบุวิชา';
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(h);
+  });
+
+  // เรียงกลุ่มตามงานชิ้นแรก (ใกล้ส่งที่สุด) ของแต่ละกลุ่ม
+  const sortedGroups = Object.entries(groups).sort((a, b) => {
+    const aFirst = a[1][0];
+    const bFirst = b[1][0];
+    if (aFirst.done !== bFirst.done) return aFirst.done ? 1 : -1;
+    const aDate = aFirst.due ? new Date(aFirst.due + (aFirst.dueTime ? 'T'+aFirst.dueTime : 'T23:59')) : new Date('9999');
+    const bDate = bFirst.due ? new Date(bFirst.due + (bFirst.dueTime ? 'T'+bFirst.dueTime : 'T23:59')) : new Date('9999');
+    return aDate - bDate;
+  });
+
+  list.innerHTML = sortedGroups.map(([subject, hwList]) => {
+    const subjectShort = subject.split(' ')[0];
+    const itemsHTML = hwList.map(h => {
+      const urg    = h.done ? 'ok' : getUrgency(h.due);
+      const tagCls = h.done ? 'ok' : urg;
+      const tagText = h.done ? '✓ ส่งแล้ว' : daysLeft(h.due, h.dueTime);
+      const timeStr = h.dueTime ? ' ' + h.dueTime : '';
+      const imgHTML = h.images && h.images.length
+        ? `<img src="${h.images[0]}" class="hw-img-thumb" onclick="openLightbox('${h.images[0]}')" />`
+        : '';
+      return `<div class="hw-item ${h.done?'done-item':''}" data-urgency="${urg}" data-id="${h.id}">
+        <div class="hw-check" onclick="toggleHW(${h.id})">${h.done?'✓':''}</div>
+        <div class="hw-body">
+          <div class="hw-title">${h.name}</div>
+          <div class="hw-meta">
+            <span class="hw-due-tag ${tagCls}">${tagText}</span>
+            ${h.due?`<span style="font-size:0.65rem;color:var(--muted)">${h.due}${timeStr}</span>`:''}
+          </div>
+          ${h.note?`<div class="hw-note">${h.note}</div>`:''}
         </div>
-        ${h.note?`<div class="hw-note">${h.note}</div>`:''}
+        ${imgHTML}
+        <div class="hw-actions">
+          <button class="hw-del" onclick="deleteHW(${h.id})">✕</button>
+        </div>
+      </div>`;
+    }).join('');
+
+    return `<div class="hw-group" style="margin-bottom:1.2rem;">
+      <div class="hw-group-title">
+        <span class="hw-subject" style="font-size:0.75rem;padding:0.25rem 0.7rem;">${subjectShort}</span>
+        <span style="font-size:0.65rem;color:var(--muted);margin-left:0.5rem;">${hwList.length} งาน</span>
       </div>
-      ${imgHTML}
-      <div class="hw-actions">
-        <button class="hw-del" onclick="deleteHW(${h.id})">✕</button>
-      </div>
+      ${itemsHTML}
     </div>`;
   }).join('');
 
@@ -975,15 +959,13 @@ function filterHW(f, btn) {
   renderHW();
 }
 
-// ─── MODAL ───
 function openModal() {
   pendingImages = [];
   document.getElementById('img-preview').innerHTML = '';
   document.getElementById('hw-name').value = '';
   document.getElementById('hw-subject').value = '';
   document.getElementById('hw-note').value = '';
-  document.getElementById('hw-due').value = '';
-  // default tomorrow
+  document.getElementById('hw-due-time').value = '';
   const tom = new Date(); tom.setDate(tom.getDate()+1);
   document.getElementById('hw-due').value = tom.toISOString().split('T')[0];
   document.getElementById('modal-overlay').classList.add('open');
@@ -1018,28 +1000,32 @@ function saveHW() {
   const hw = {
     id: Date.now(),
     name,
-    subject: document.getElementById('hw-subject').value,
-    due: document.getElementById('hw-due').value,
-    note: document.getElementById('hw-note').value.trim(),
+    subject:  document.getElementById('hw-subject').value,
+    due:      document.getElementById('hw-due').value,
+    dueTime:  document.getElementById('hw-due-time').value,   // ← บันทึกเวลา
+    note:     document.getElementById('hw-note').value.trim(),
     priority: selectedPrio,
-    images: [...pendingImages],
-    done: false,
-    created: new Date().toISOString()
+    images:   [...pendingImages],
+    done:     false,
+    created:  new Date().toISOString()
   };
   homeworks.unshift(hw);
   save(); renderHW(); closeModal();
 }
 
-// ─── LIGHTBOX ───
 function openLightbox(src) {
   document.getElementById('lightbox-img').src = src;
   document.getElementById('lightbox').classList.add('open');
 }
 
-// ─── SAVE ───
+function formatTimeInput(el) {
+  let v = el.value.replace(/[^0-9]/g,'');
+  if (v.length >= 3) v = v.slice(0,2) + ':' + v.slice(2,4);
+  el.value = v;
+}
+
 function save() { localStorage.setItem('hw_data', JSON.stringify(homeworks)); }
 
-// ─── PAGES ───
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
@@ -1047,7 +1033,6 @@ function showPage(id) {
   event.target.classList.add('active');
 }
 
-// ─── REMINDERS (Browser Notification) ───
 function requestNotifPermission() {
   if ('Notification' in window && Notification.permission === 'default') {
     Notification.requestPermission();
@@ -1059,17 +1044,13 @@ function checkReminders() {
   if (!('Notification' in window) || Notification.permission !== 'granted') return;
   const now = new Date();
   const h = now.getHours(), m = now.getMinutes();
-
-  // 7:00 morning reminder
   if (h === 7 && m === 0) {
     const pending = homeworks.filter(hw => !hw.done);
-    const urgent = pending.filter(hw => getUrgency(hw.due) === 'urgent');
+    const urgent  = pending.filter(hw => getUrgency(hw.due) === 'urgent');
     let body = `มีงานค้าง ${pending.length} ชิ้น`;
     if (urgent.length) body += ` 🔴 ด่วน ${urgent.length} ชิ้น!`;
     new Notification('⏰ ตื่นแล้ว! เช็คงานวันนี้', { body, icon: '' });
   }
-
-  // 2-day before due reminder
   homeworks.filter(hw => !hw.done && hw.due).forEach(hw => {
     const diff = Math.ceil((new Date(hw.due) - now) / 86400000);
     if ((diff === 2 || diff === 1) && h === 18 && m === 0) {
@@ -1081,14 +1062,12 @@ function checkReminders() {
 }
 setInterval(checkReminders, 60000);
 
-// ─── PWA SERVICE WORKER ───
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js').catch(() => {});
   });
 }
 
-// close modal on overlay click
 document.getElementById('modal-overlay').addEventListener('click', function(e){
   if (e.target === this) closeModal();
 });
