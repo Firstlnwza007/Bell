@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ผู้ช่วยส่วนตัว ม.6/6</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#7aa2f7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ม.6 Assistant">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#0e0f14;
+  --surface:#14151d;
+  --card:#1a1b26;
+  --card2:#1f2030;
+  --border:#2a2c3e;
+  --border2:#353750;
+  --accent:#7aa2f7;
+  --accent2:#bb9af7;
+  --green:#9ece6a;
+  --red:#f7768e;
+  --yellow:#e0af68;
+  --orange:#ff9e64;
+  --cyan:#7dcfff;
+  --text:#c0caf5;
+  --text2:#a9b1d6;
+  --muted:#565f89;
+  --muted2:#3b3d57;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'IBM Plex Sans Thai','Sarabun',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* BG ambient */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 50% 35% at 15% 0%, rgba(122,162,247,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 85% 100%, rgba(187,154,247,0.06) 0%, transparent 60%);
+  pointer-events:none;z-index:0;
+}
+
+/* ── NAV TABS ── */
+.nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(14,15,20,0.92);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;
+  padding:0 1rem;
+  gap:0.2rem;
+  overflow-x:auto;
+}
+.nav::-webkit-scrollbar{display:none}
+
+.nav-tab{
+  flex-shrink:0;
+  font-family:'IBM Plex Sans Thai',sans-serif;
+  font-size:0.8rem;
+  font-weight:500;
+  color:var(--muted);
+  background:transparent;
+  border:none;
+  padding:0.9rem 0.9rem;
+  cursor:pointer;
+  border-bottom:2px solid transparent;
+  transition:all 0.2s;
+  white-space:nowrap;
+}
+.nav-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.nav-tab:hover:not(.active){color:var(--text2);}
+
+.app{position:relative;z-index:1;max-width:780px;margin:0 auto;padding:1.4rem 1rem 5rem;}
+
+/* ── PAGES ── */
+.page{display:none;animation:fadeIn 0.25s ease;}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── SECTION TITLE ── */
+.sec-title{
+  font-size:0.68rem;font-weight:600;
+  color:var(--muted);letter-spacing:0.12em;
+  text-transform:uppercase;margin-bottom:0.8rem;
+}
+
+/* ── CARD ── */
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:1.2rem 1.4rem;
+  margin-bottom:1rem;
+}
+
+/* ── HOME PAGE ── */
+.home-header{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  margin-bottom:1.6rem;
+  animation:fadeIn 0.4s ease;
+}
+.home-greeting{
+  font-size:clamp(1.3rem,4vw,1.8rem);
+  font-weight:700;line-height:1.2;
+}
+.home-greeting .hi{color:var(--accent);}
+.home-date{font-size:0.75rem;color:var(--muted);margin-top:0.3rem;}
+
+.clock-box{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:0.5rem 1rem;
+  text-align:center;flex-shrink:0;
+}
+.clock-time{
+  font-size:1.4rem;font-weight:700;
+  color:var(--cyan);letter-spacing:0.04em;
+  font-variant-numeric:tabular-nums;
+}
+.clock-label{font-size:0.62rem;color:var(--muted);}
+
+/* schedule strip */
+.today-strip{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:1rem 1.2rem;
+  margin-bottom:1rem;overflow-x:auto;
+}
+.strip-periods{display:flex;gap:0.5rem;min-width:max-content;}
+.period-pill{
+  background:var(--card2);border:1px solid var(--border2);
+  border-radius:10px;padding:0.5rem 0.9rem;
+  min-width:90px;
+  position:relative;
+}
+.period-pill.current{border-color:var(--accent);background:rgba(122,162,247,0.08);}
+.period-pill.break{opacity:0.45;}
+.pp-time{font-size:0.6rem;color:var(--muted);}
+.pp-sub{font-size:0.78rem;font-weight:600;color:var(--text);margin:0.15rem 0;}
+.pp-teacher{font-size:0.62rem;color:var(--muted);}
+.pp-dot{
+  position:absolute;top:6px;right:8px;
+  width:6px;height:6px;border-radius:50%;
+  background:var(--accent);
+  animation:pulse 1.5s infinite;
+  display:none;
+}
+.period-pill.current .pp-dot{display:block;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+
+/* quick stats */
+.quick-stats{display:flex;gap:0.8rem;margin-bottom:1rem;}
+.qs{
+  flex:1;background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:0.9rem;text-align:center;
+}
+.qs-num{font-size:1.6rem;font-weight:700;}
+.qs-label{font-size:0.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;}
+.qs.urgent .qs-num{color:var(--red);}
+.qs.soon .qs-num{color:var(--yellow);}
+.qs.done .qs-num{color:var(--green);}
+
+/* upcoming tasks */
+.upcoming-item{
+  display:flex;align-items:center;gap:0.9rem;
+  padding:0.8rem 0;border-bottom:1px solid var(--border);
+}
+.upcoming-item:last-child{border-bottom:none;}
+.ui-badge{
+  width:38px;height:38px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;flex-shrink:0;
+}
+.ui-info{flex:1;}
+.ui-title{font-size:0.85rem;font-weight:600;}
+.ui-sub{font-size:0.7rem;color:var(--muted);margin-top:0.15rem;}
+.ui-due{
+  font-size:0.7rem;font-weight:600;
+  padding:0.2rem 0.6rem;border-radius:6px;
+  flex-shrink:0;
+}
+
+/* ── SCHEDULE PAGE ── */
+.sched-day{margin-bottom:1.4rem;}
+.sched-day-title{
+  font-size:0.72rem;font-weight:700;letter-spacing:0.1em;
+  color:var(--accent2);text-transform:uppercase;
+  margin-bottom:0.6rem;padding-left:0.2rem;
+}
+.sched-row{
+  display:flex;align-items:stretch;gap:0;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:10px;margin-bottom:0.4rem;overflow:hidden;
+}
+.sched-time{
+  min-width:80px;padding:0.7rem 0.8rem;
+  font-size:0.65rem;color:var(--muted);
+  border-right:1px solid var(--border);
+  display:flex;align-items:center;
+  background:var(--surface);
+  flex-shrink:0;
+}
+.sched-content{padding:0.7rem 1rem;flex:1;}
+.sched-sub{font-size:0.82rem;font-weight:600;color:var(--text);}
+.sched-teacher{font-size:0.68rem;color:var(--muted);margin-top:0.1rem;}
+.sched-room{font-size:0.65rem;color:var(--accent);margin-top:0.05rem;}
+.sched-row.break-row .sched-sub{color:var(--muted);font-weight:400;font-size:0.75rem;}
+.sched-row.homeroom .sched-content{background:rgba(122,162,247,0.05);}
+
+/* ── HOMEWORK PAGE ── */
+.hw-filters{display:flex;gap:0.5rem;margin-bottom:1.2rem;flex-wrap:wrap;}
+.hw-filter{
+  font-size:0.72rem;padding:0.3rem 0.8rem;
+  border-radius:7px;border:1px solid var(--border);
+  background:transparent;color:var(--muted);
+  cursor:pointer;transition:all 0.15s;font-family:inherit;
+}
+.hw-filter.active{background:var(--accent);border-color:var(--accent);color:#0e0f14;font-weight:600;}
+
+.hw-add-btn{
+  width:100%;padding:0.8rem;
+  background:rgba(122,162,247,0.08);
+  border:1px dashed var(--accent);
+  border-radius:12px;color:var(--accent);
+  font-family:'IBM Plex Sans Thai',sans-serif;
+  font-size:0.85rem;font-weight:600;
+  cursor:pointer;transition:all 0.2s;
+  margin-bottom:1rem;
+}
+.hw-add-btn:hover{background:rgba(122,162,247,0.14);}
+
+.hw-item{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:1rem 1.2rem;
+  margin-bottom:0.7rem;
+  display:flex;gap:0.9rem;align-items:flex-start;
+  position:relative;overflow:hidden;
+  animation:slideIn 0.3s ease;
+  transition:opacity 0.3s;
+}
+.hw-item.done-item{opacity:0.4;}
+@keyframes slideIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+
+.hw-item::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:3px;border-radius:3px 0 0 3px;
+}
+.hw-item[data-urgency="urgent"]::before{background:var(--red);}
+.hw-item[data-urgency="soon"]::before{background:var(--yellow);}
+.hw-item[data-urgency="ok"]::before{background:var(--green);}
+
+.hw-check{
+  width:22px;height:22px;border-radius:6px;
+  border:2px solid var(--border2);background:var(--surface);
+  cursor:pointer;flex-shrink:0;margin-top:2px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.75rem;transition:all 0.2s;
+}
+.done-item .hw-check{background:var(--green);border-color:var(--green);color:#0e0f14;}
+
+.hw-body{flex:1;min-width:0;}
+.hw-title{font-size:0.88rem;font-weight:600;line-height:1.3;}
+.done-item .hw-title{text-decoration:line-through;color:var(--muted);}
+.hw-meta{display:flex;gap:0.5rem;margin-top:0.35rem;flex-wrap:wrap;align-items:center;}
+.hw-subject{
+  font-size:0.65rem;padding:0.15rem 0.5rem;
+  border-radius:5px;background:rgba(187,154,247,0.1);
+  color:var(--accent2);font-weight:600;
+}
+.hw-due-tag{
+  font-size:0.65rem;padding:0.15rem 0.5rem;
+  border-radius:5px;font-weight:600;
+}
+.hw-due-tag.urgent{background:rgba(247,118,142,0.12);color:var(--red);}
+.hw-due-tag.soon{background:rgba(224,175,104,0.12);color:var(--yellow);}
+.hw-due-tag.ok{background:rgba(158,206,106,0.1);color:var(--green);}
+.hw-note{font-size:0.72rem;color:var(--muted);margin-top:0.3rem;line-height:1.5;}
+
+.hw-img-thumb{
+  width:48px;height:48px;border-radius:8px;
+  object-fit:cover;border:1px solid var(--border2);
+  cursor:pointer;flex-shrink:0;
+}
+
+.hw-actions{display:flex;gap:0.4rem;flex-direction:column;align-items:flex-end;}
+.hw-del{
+  background:transparent;border:none;color:var(--muted);
+  cursor:pointer;font-size:0.85rem;opacity:0;transition:opacity 0.2s;
+}
+.hw-item:hover .hw-del{opacity:1;}
+.hw-del:hover{color:var(--red);}
+
+/* ── MODAL ── */
+.modal-overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,0.7);
+  display:none;align-items:center;justify-content:center;
+  z-index:999;padding:1rem;
+  backdrop-filter:blur(4px);
+}
+.modal-overlay.open{display:flex;animation:fadeIn 0.2s ease;}
+.modal{
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:18px;padding:1.5rem;
+  width:100%;max-width:440px;
+  max-height:90vh;overflow-y:auto;
+}
+.modal-title{
+  font-size:1rem;font-weight:700;margin-bottom:1.2rem;
+  color:var(--accent);
+}
+.form-group{margin-bottom:1rem;}
+.form-label{
+  font-size:0.72rem;color:var(--muted);
+  letter-spacing:0.06em;text-transform:uppercase;
+  margin-bottom:0.4rem;display:block;
+}
+.form-input,.form-select,.form-textarea{
+  width:100%;background:var(--surface);
+  border:1px solid var(--border2);border-radius:9px;
+  color:var(--text);font-family:'IBM Plex Sans Thai',sans-serif;
+  font-size:0.85rem;padding:0.7rem 0.9rem;
+  outline:none;transition:border-color 0.2s;
+}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent);}
+.form-textarea{resize:vertical;min-height:70px;}
+.form-select option{background:var(--card);}
+
+.priority-row{display:flex;gap:0.5rem;margin-top:0.3rem;}
+.pr-btn{
+  flex:1;padding:0.5rem;border-radius:8px;
+  border:1px solid var(--border);background:var(--surface);
+  color:var(--muted);font-family:inherit;font-size:0.75rem;
+  cursor:pointer;transition:all 0.15s;
+}
+.pr-btn.active.urgent-p{background:rgba(247,118,142,0.12);border-color:var(--red);color:var(--red);}
+.pr-btn.active.soon-p{background:rgba(224,175,104,0.12);border-color:var(--yellow);color:var(--yellow);}
+.pr-btn.active.ok-p{background:rgba(158,206,106,0.1);border-color:var(--green);color:var(--green);}
+
+.img-upload-area{
+  border:1.5px dashed var(--border2);border-radius:10px;
+  padding:1.2rem;text-align:center;cursor:pointer;
+  color:var(--muted);font-size:0.8rem;
+  transition:border-color 0.2s;
+}
+.img-upload-area:hover{border-color:var(--accent);}
+#img-preview{
+  display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.6rem;
+}
+.preview-img{
+  width:60px;height:60px;border-radius:8px;
+  object-fit:cover;border:1px solid var(--border2);
+}
+
+.modal-actions{display:flex;gap:0.6rem;margin-top:1.4rem;}
+.btn-cancel{
+  flex:1;padding:0.75rem;border-radius:10px;
+  border:1px solid var(--border2);background:transparent;
+  color:var(--text2);font-family:inherit;font-size:0.85rem;
+  cursor:pointer;
+}
+.btn-save{
+  flex:2;padding:0.75rem;border-radius:10px;
+  border:none;background:var(--accent);
+  color:#0e0f14;font-family:inherit;font-size:0.85rem;
+  font-weight:700;cursor:pointer;transition:opacity 0.2s;
+}
+.btn-save:hover{opacity:0.85;}
+
+/* ── ROUTINE PAGE ── */
+.routine-block{
+  display:flex;align-items:center;gap:0.9rem;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:0.9rem 1.2rem;
+  margin-bottom:0.6rem;
+  position:relative;overflow:hidden;
+}
+.rb-time{
+  font-size:0.78rem;font-weight:600;
+  color:var(--cyan);min-width:55px;
+  font-variant-numeric:tabular-nums;
+}
+.rb-icon{font-size:1.1rem;flex-shrink:0;}
+.rb-info{flex:1;}
+.rb-title{font-size:0.85rem;font-weight:600;}
+.rb-note{font-size:0.7rem;color:var(--muted);margin-top:0.1rem;}
+.rb-tag{
+  font-size:0.62rem;padding:0.15rem 0.5rem;border-radius:5px;
+  font-weight:600;flex-shrink:0;
+}
+.rb-tag.school{background:rgba(122,162,247,0.1);color:var(--accent);}
+.rb-tag.study{background:rgba(158,206,106,0.1);color:var(--green);}
+.rb-tag.free{background:rgba(187,154,247,0.1);color:var(--accent2);}
+.rb-tag.sleep{background:rgba(86,95,137,0.3);color:var(--muted);}
+.rb-tag.extra{background:rgba(255,158,100,0.1);color:var(--orange);}
+
+/* TCAS section */
+.tcas-card{
+  background:linear-gradient(135deg,rgba(122,162,247,0.08),rgba(187,154,247,0.06));
+  border:1px solid rgba(122,162,247,0.25);
+  border-radius:14px;padding:1.2rem 1.4rem;margin-bottom:1rem;
+}
+.tcas-title{
+  font-size:0.9rem;font-weight:700;
+  color:var(--accent);margin-bottom:0.8rem;
+  display:flex;align-items:center;gap:0.5rem;
+}
+.tcas-item{
+  display:flex;justify-content:space-between;
+  align-items:center;padding:0.5rem 0;
+  border-bottom:1px solid rgba(42,44,62,0.5);
+  font-size:0.8rem;
+}
+.tcas-item:last-child{border-bottom:none;}
+.tcas-name{color:var(--text2);}
+.tcas-date{color:var(--yellow);font-weight:600;font-size:0.75rem;}
+
+/* image lightbox */
+.lightbox{
+  position:fixed;inset:0;background:rgba(0,0,0,0.92);
+  z-index:1000;display:none;
+  align-items:center;justify-content:center;
+  cursor:pointer;
+}
+.lightbox.open{display:flex;}
+.lightbox img{max-width:95vw;max-height:90vh;border-radius:8px;}
+
+/* empty */
+.empty-state{
+  text-align:center;padding:2.5rem 1rem;
+  color:var(--muted);font-size:0.82rem;line-height:2;
+}
+.empty-icon{font-size:2.2rem;margin-bottom:0.5rem;}
+
+/* notify badge */
+.notify-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--red);display:inline-block;
+  margin-left:4px;vertical-align:middle;
+}
+
+/* scrollbar */
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <button class="nav-tab active" onclick="showPage('home')">🏠 หน้าแรก</button>
+  <button class="nav-tab" onclick="showPage('schedule')">📅 ตารางเรียน</button>
+  <button class="nav-tab" onclick="showPage('homework')">📚 การบ้าน</button>
+  <button class="nav-tab" onclick="showPage('routine')">⏰ กิจวัตร</button>
+</nav>
+
+<div class="app">
+
+<!-- ═══════════ HOME ═══════════ -->
+<div id="page-home" class="page active">
+
+  <div class="home-header">
+    <div>
+      <div class="home-greeting"><span class="hi">สวัสดี!</span> 👋<br>วันนี้เป็นยังไงบ้าง?</div>
+      <div class="home-date" id="home-date"></div>
+    </div>
+    <div class="clock-box">
+      <div class="clock-time" id="live-clock">--:--</div>
+      <div class="clock-label">เวลาปัจจุบัน</div>
+    </div>
+  </div>
+
+  <!-- Today schedule strip -->
+  <div class="sec-title">📖 ตารางวันนี้</div>
+  <div class="today-strip">
+    <div class="strip-periods" id="today-strip"></div>
+  </div>
+
+  <!-- Quick stats -->
+  <div class="quick-stats">
+    <div class="qs urgent">
+      <div class="qs-num" id="stat-urgent">0</div>
+      <div class="qs-label">ด่วน!</div>
+    </div>
+    <div class="qs soon">
+      <div class="qs-num" id="stat-soon">0</div>
+      <div class="qs-label">ใกล้ถึง</div>
+    </div>
+    <div class="qs done">
+      <div class="qs-num" id="stat-done">0</div>
+      <div class="qs-label">ส่งแล้ว</div>
+    </div>
+  </div>
+
+  <!-- Upcoming -->
+  <div class="card">
+    <div class="sec-title">📋 งานที่ต้องส่ง</div>
+    <div id="upcoming-list">
+      <div class="empty-state"><div class="empty-icon">🎉</div>ยังไม่มีงาน<br>ไปเพิ่มที่แท็บ "การบ้าน" ได้เลย!</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════ SCHEDULE ═══════════ -->
+<div id="page-schedule" class="page">
+  <div id="sched-container"></div>
+</div>
+
+<!-- ═══════════ HOMEWORK ═══════════ -->
+<div id="page-homework" class="page">
+
+  <div class="hw-filters">
+    <button class="hw-filter active" onclick="filterHW('all',this)">ทั้งหมด</button>
+    <button class="hw-filter" onclick="filterHW('pending',this)">ยังไม่ส่ง</button>
+    <button class="hw-filter" onclick="filterHW('urgent',this)">🔴 ด่วน</button>
+    <button class="hw-filter" onclick="filterHW('soon',this)">🟡 ใกล้ถึง</button>
+    <button class="hw-filter" onclick="filterHW('done',this)">✓ ส่งแล้ว</button>
+  </div>
+
+  <button class="hw-add-btn" onclick="openModal()">+ เพิ่มงาน / การบ้าน</button>
+
+  <div id="hw-list"></div>
+</div>
+
+<!-- ═══════════ ROUTINE ═══════════ -->
+<div id="page-routine" class="page">
+
+  <!-- TCAS -->
+  <div class="tcas-card">
+    <div class="tcas-title">🎯 TCAS / A-LEVEL ปฏิทิน</div>
+    <div class="tcas-item"><span class="tcas-name">TCAS รอบ Portfolio</span><span class="tcas-date">ธ.ค. 68 – ม.ค. 69</span></div>
+    <div class="tcas-item"><span class="tcas-name">TCAS รอบ Quota</span><span class="tcas-date">ก.พ. – มี.ค. 69</span></div>
+    <div class="tcas-item"><span class="tcas-name">A-LEVEL สอบ</span><span class="tcas-date">มี.ค. 69</span></div>
+    <div class="tcas-item"><span class="tcas-name">TCAS รอบ Admission</span><span class="tcas-date">เม.ย. – พ.ค. 69</span></div>
+  </div>
+
+  <!-- Daily Routine -->
+  <div class="sec-title">กิจวัตรประจำวัน (วันธรรมดา)</div>
+
+  <div class="routine-block">
+    <div class="rb-time">06:30</div>
+    <div class="rb-icon">⏰</div>
+    <div class="rb-info"><div class="rb-title">ตื่นนอน</div><div class="rb-note">อาบน้ำ แต่งตัว กินข้าวเช้า</div></div>
+    <div class="rb-tag school">โรงเรียน</div>
+  </div>
+  <div class="routine-block">
+    <div class="rb-time">07:00</div>
+    <div class="rb-icon">🔔</div>
+    <div class="rb-info"><div class="rb-title">แจ้งเตือน: เช็คงานวันนี้</div><div class="rb-note">ดูงานที่ต้องส่ง / ของที่ต้องเอาไปโรงเรียน</div></div>
+    <div class="rb-tag school">สำคัญ</div>
+  </div>
+  <div class="routine-block">
+    <div class="rb-time">07:40</div>
+    <div class="rb-icon">🚌</div>
+    <div class="rb-info"><div class="rb-title">ออกจากบ้าน</div><div class="rb-note">เดินทาง ~20 นาที ถึงก่อน 08:00</div></div>
+    <div class="rb-tag school">โรงเรียน</div>
+  </div>
+  <div class="routine-block">
+    <div class="rb-time">08:00</div>
+    <div class="rb-icon">🏫</div>
+    <div class="rb-info"><div class="rb-title">เรียน ม.6/6</div><div class="rb-note">ตามตารางเรียน</div></div>
+    <div class="rb-tag school">โรงเรียน</div>
+  </div>
+  <div class="routine-block">
+    <div class="rb-time">15:30</div>
+    <div class="rb-icon">🔚</div>
+    <div class="rb-info"><div class="rb-title">เลิกเรียน</div><div class="rb-note">วันจันทร์ & ศุกร์ → ไปเรียนพิเศษคณิต</div></div>
+    <div class="rb-tag extra">กิจกรรม</div>
+  </div>
+  <div class="routine-block">
+    <div class="rb-time">17:00</div>
+    <div class="rb-icon">➗</div>
+    <div class="rb-info"><div class="rb-title">เรียนพิเศษคณิตศาสตร์</div><div class="rb-note">จันทร์ & ศุกร์ เท่านั้น 17:00–19:00</div></div>
+    <div class="rb-tag extra">เรียนพิเศษ</div>
+  </div>
+  <div class="routine-block">
+    <div class="rb-time">19:00</div>
+    <div class="rb-icon">🍜</div>
+    <div class="rb-info"><div class="rb-title">กินข้าวเย็น (วัน จ&ศ)</div><div class="rb-note">หลังเรียนพิเศษ</div></div>
+    <div class="rb-tag free">พักผ่อน</div>
+  </div>
+  <div class="routine-block">
+    <div class="rb-time">21:00</div>
+    <div class="rb-icon">🏠</div>
+    <div class="rb-info"><div class="rb-title">ถึงบ้าน</div><div class="rb-note">อาบน้ำ พัก → เริ่มทำการบ้าน</div></div>
+    <div class="rb-tag study">ทบทวน</div>
+  </div>
+  <div class="routine-block">
+    <div class="rb-time">21:30</div>
+    <div class="rb-icon">📖</div>
+    <div class="rb-info"><div class="rb-title">ทำการบ้าน / อ่านหนังสือ</div><div class="rb-note">ทำจนหมด ถ้าน้อยอาจเล่นเกมก่อนนอน</div></div>
+    <div class="rb-tag study">เรียน</div>
+  </div>
+  <div class="routine-block">
+    <div class="rb-time">22:00</div>
+    <div class="rb-icon">😴</div>
+    <div class="rb-info"><div class="rb-title">เข้านอน (ถ้าไม่มีงาน)</div><div class="rb-note">ถ้ามีงานเยอะ อาจดึกกว่านี้</div></div>
+    <div class="rb-tag sleep">นอน</div>
+  </div>
+
+</div>
+</div><!-- end app -->
+
+<!-- ═══════════ ADD HOMEWORK MODAL ═══════════ -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-title">+ เพิ่มงาน / การบ้าน</div>
+
+    <div class="form-group">
+      <label class="form-label">ชื่องาน *</label>
+      <input class="form-input" id="hw-name" placeholder="เช่น ส่งรายงานวิชาสังคม" />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">วิชา</label>
+      <select class="form-select" id="hw-subject">
+        <option value="">-- เลือกวิชา --</option>
+        <option>ภาษาไทย (ท33101)</option>
+        <option>คณิตศาสตร์ (ค33101)</option>
+        <option>ฟิสิกส์ (ว33205)</option>
+        <option>เคมี (ว33245)</option>
+        <option>ชีววิทยา (ว33225)</option>
+        <option>ภาษาอังกฤษ (อ33231)</option>
+        <option>สังคมศึกษา (ส33107)</option>
+        <option>พลศึกษา (พ33101)</option>
+        <option>ศิลปะ (ศ33101)</option>
+        <option>การงานอาชีพ (ง33901)</option>
+        <option>คอมพิวเตอร์ (ง30273)</option>
+        <option>ภาษาอาเซียน (เสรี)</option>
+        <option>อื่น ๆ</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">วันที่ต้องส่ง *</label>
+      <input class="form-input" id="hw-due" type="date" />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">ความเร่งด่วน</label>
+      <div class="priority-row">
+        <button class="pr-btn urgent-p" data-p="urgent" onclick="setPrio(this)">🔴 ด่วนมาก</button>
+        <button class="pr-btn soon-p active" data-p="soon" onclick="setPrio(this)">🟡 ปกติ</button>
+        <button class="pr-btn ok-p" data-p="ok" onclick="setPrio(this)">🟢 ยังมีเวลา</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">หมายเหตุ / รายละเอียด</label>
+      <textarea class="form-textarea" id="hw-note" placeholder="เช่น หน้า 45-50, ส่งใน Google Classroom..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">แนบรูป (ใบงาน / โน้ต)</label>
+      <div class="img-upload-area" onclick="document.getElementById('hw-img-input').click()">
+        📷 แตะเพื่อเลือกรูป
+      </div>
+      <input type="file" id="hw-img-input" multiple accept="image/*" style="display:none" onchange="previewImgs(this)"/>
+      <div id="img-preview"></div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">ยกเลิก</button>
+      <button class="btn-save" onclick="saveHW()">💾 บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('open')">
+  <img id="lightbox-img" src="" alt="" />
+</div>
+
+<script>
+// ─── TIMETABLE DATA ───
+const TIMETABLE = {
+  จันทร์: [
+    {slot:0, time:'07:30-08:20', type:'homeroom', sub:'โฮมรูม / ครูที่ปรึกษา', teacher:'', room:''},
+    {slot:1, time:'08:20-09:10', sub:'ค33201', teacher:'ครูเฉลิมพล', room:'231'},
+    {slot:2, time:'09:10-10:00', sub:'เสรีภาษาอาเซียน', teacher:'', room:''},
+    {slot:3, time:'10:00-10:50', sub:'ส33107', teacher:'ครูพิราวรรณ', room:'433'},
+    {slot:4, time:'10:50-11:40', sub:'ค33101', teacher:'ครูปริยทิพย์', room:'234'},
+    {slot:5, time:'11:40-12:30', sub:'ประชุมระดับยูงทอง', teacher:'', room:''},
+    {slot:6, time:'12:30-13:20', type:'break', sub:'พักกลางวัน', teacher:'', room:''},
+    {slot:7, time:'13:20-14:10', sub:'ส่งเสริมวิชาการ', teacher:'', room:'126'},
+    {slot:8, time:'14:10-15:00', sub:'ส33105', teacher:'ครูปัญญาวุธ', room:'431-2'},
+  ],
+  อังคาร: [
+    {slot:0, time:'07:30-08:20', type:'homeroom', sub:'โฮมรูม / ครูที่ปรึกษา', teacher:'', room:''},
+    {slot:1, time:'08:20-09:10', sub:'ว33205', teacher:'ครูปียนุช', room:'941'},
+    {slot:2, time:'09:10-10:00', sub:'ว33205', teacher:'ครูปียนุช', room:'941'},
+    {slot:3, time:'10:00-10:50', sub:'ค33201', teacher:'ครูเฉลิมพล', room:'231'},
+    {slot:4, time:'10:50-11:40', sub:'ท33101', teacher:'ครูบุษบา', room:'224'},
+    {slot:5, time:'11:40-12:30', sub:'ว33245', teacher:'ครูลักษณ์อ้อนง', room:'932'},
+    {slot:6, time:'12:30-13:20', type:'break', sub:'พักกลางวัน', teacher:'', room:''},
+    {slot:7, time:'13:20-14:10', sub:'ว33225', teacher:'ครูกัญญ์นลิน', room:'921'},
+    {slot:8, time:'14:10-15:00', sub:'ค33101', teacher:'ครูปริยทิพย์', room:'234'},
+  ],
+  พุธ: [
+    {slot:0, time:'07:30-08:20', type:'homeroom', sub:'โฮมรูม / ครูที่ปรึกษา', teacher:'', room:''},
+    {slot:1, time:'08:20-09:10', sub:'ก33901', teacher:'ครูปรางค์ศ์ทิพย์', room:'115-1'},
+    {slot:2, time:'09:10-10:00', sub:'ส33101', teacher:'ครูอัคร-เดช', room:'731'},
+    {slot:3, time:'10:00-10:50', sub:'อ33231', teacher:'ครูกวีวรรณ', room:'246'},
+    {slot:4, time:'10:50-11:40', sub:'ท33101', teacher:'ครูบุษบา', room:'221'},
+    {slot:5, time:'11:40-12:30', sub:'ว33205', teacher:'ครูปียนุช', room:'942'},
+    {slot:6, time:'12:30-13:20', type:'break', sub:'พักกลางวัน', teacher:'', room:''},
+    {slot:7, time:'13:20-14:10', sub:'ว33245', teacher:'ครูลักษณ์อ้อนง', room:'932'},
+    {slot:8, time:'14:10-15:00', sub:'ว33245', teacher:'ครูลักษณ์อ้อนง', room:'932'},
+  ],
+  พฤหัสฯ: [
+    {slot:0, time:'07:30-08:20', sub:'กิจกรรมจิตอาสา', teacher:'', room:'ก33904'},
+    {slot:1, time:'08:20-09:10', sub:'กิจกรรมโรงเรียนวิถีพุทธ', teacher:'', room:''},
+    {slot:2, time:'09:10-10:00', sub:'พ33101', teacher:'ครูรัฐพงศ์ ส.ฟุตซอล', room:''},
+    {slot:3, time:'10:00-10:50', sub:'ส33107', teacher:'ครูพิราวรรณ', room:'433'},
+    {slot:4, time:'10:50-11:40', sub:'ค33201', teacher:'ครูเฉลิมพล', room:'231'},
+    {slot:5, time:'11:40-12:30', sub:'ว33205', teacher:'ครูปียนุช', room:'941'},
+    {slot:6, time:'12:30-13:20', type:'break', sub:'พักกลางวัน', teacher:'', room:''},
+    {slot:7, time:'13:20-14:10', sub:'ง30273', teacher:'ครูรัตนา', room:'345'},
+    {slot:8, time:'14:10-15:00', sub:'ง30273', teacher:'ครูรัตนา', room:'345'},
+  ],
+  ศุกร์: [
+    {slot:0, time:'07:30-08:20', sub:'ผู้ดีบางปกอก ส30227', teacher:'', room:''},
+    {slot:1, time:'08:20-09:10', sub:'ส33105', teacher:'ครูปัญญาวุธ', room:'431-1'},
+    {slot:2, time:'09:10-10:00', sub:'อ33231', teacher:'ครูSuelen', room:'631'},
+    {slot:3, time:'10:00-10:50', sub:'อ33231', teacher:'ครูกวีวรรณ', room:'246'},
+    {slot:4, time:'10:50-11:40', sub:'ว33225', teacher:'ครูกัญญ์นลิน', room:'921'},
+    {slot:5, time:'11:40-12:30', sub:'ว33225', teacher:'ครูกัญญ์นลิน', room:'921'},
+    {slot:6, time:'12:30-13:20', type:'break', sub:'พักกลางวัน', teacher:'', room:''},
+    {slot:7, time:'13:20-14:10', sub:'ค33201', teacher:'ครูเฉลิมพล', room:'231'},
+    {slot:8, time:'14:10-15:00', sub:'ง30285', teacher:'ครูชาญวิทย์', room:'911'},
+    {slot:9, time:'15:00-15:50', sub:'ง30285', teacher:'ครูชาญวิทย์', room:'911'},
+  ]
+};
+
+const DAYS_TH = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสฯ','ศุกร์','เสาร์'];
+
+// ─── STATE ───
+let homeworks = JSON.parse(localStorage.getItem('hw_data') || '[]');
+let selectedPrio = 'soon';
+let hwFilter = 'all';
+let pendingImages = []; // base64
+
+// ─── HELPERS ───
+const MONTH_TH = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+const DAY_LONG = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+// Map JS getDay() index → TIMETABLE keys
+const DAY_KEY  = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสฯ','ศุกร์','เสาร์'];
+
+function toMinutes(timeStr) {
+  // timeStr like "08:20"
+  const [h, m] = timeStr.split(':').map(Number);
+  return h * 60 + m;
+}
+function periodStartEnd(p) {
+  // p.time like "08:20-09:10"
+  const [s, e] = p.time.split('-');
+  return { start: toMinutes(s), end: toMinutes(e) };
+}
+function nowMinutes() {
+  const n = new Date();
+  return n.getHours() * 60 + n.getMinutes();
+}
+
+// ─── CLOCK (updates every second) ───
+function updateClock() {
+  const now = new Date();
+  // HH:MM real local time
+  const hh = String(now.getHours()).padStart(2,'0');
+  const mm = String(now.getMinutes()).padStart(2,'0');
+  document.getElementById('live-clock').textContent = `${hh}:${mm}`;
+
+  // Thai date string with Buddhist year
+  document.getElementById('home-date').textContent =
+    `วัน${DAY_LONG[now.getDay()]}ที่ ${now.getDate()} ${MONTH_TH[now.getMonth()]} ${now.getFullYear()+543}`;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ─── TODAY STRIP (re-renders every minute so current-pill updates live) ───
+function renderTodayStrip() {
+  const dayIdx = new Date().getDay();          // 0=Sun … 6=Sat
+  const dayName = DAY_KEY[dayIdx];             // map to TIMETABLE key
+  const periods  = TIMETABLE[dayName];
+  const strip    = document.getElementById('today-strip');
+
+  if (!periods) {
+    strip.innerHTML = '<div style="color:var(--muted);font-size:0.8rem;padding:0.5rem">วันนี้หยุดเรียน 🎉</div>';
+    return;
+  }
+
+  const nm = nowMinutes();
+
+  strip.innerHTML = periods.map(p => {
+    const {start, end} = periodStartEnd(p);
+    const isCurrent = nm >= start && nm < end;
+    const isBreak   = p.type === 'break';
+    const isHome    = p.type === 'homeroom';
+    return `<div class="period-pill ${isCurrent?'current':''} ${(isBreak||isHome)?'break':''}">
+      <div class="pp-dot"></div>
+      <div class="pp-time">${p.time}</div>
+      <div class="pp-sub">${p.sub}</div>
+      <div class="pp-teacher">${p.teacher||''}</div>
+    </div>`;
+  }).join('');
+
+  // Scroll the current pill into view automatically
+  const cur = strip.querySelector('.period-pill.current');
+  if (cur) cur.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+}
+renderTodayStrip();
+// Re-check every 60 s so the highlighted pill updates when a period changes
+setInterval(renderTodayStrip, 60000);
+
+// ─── SCHEDULE RENDER ───
+function renderSchedule() {
+  const todayKey = DAY_KEY[new Date().getDay()];
+  const nm       = nowMinutes();
+  const c = document.getElementById('sched-container');
+  c.innerHTML = Object.entries(TIMETABLE).map(([day, periods]) => {
+    const isToday = day === todayKey;
+    return `<div class="sched-day">
+      <div class="sched-day-title" style="${isToday?'color:var(--accent);':''}">
+        ${isToday ? '▶ ' : ''}วัน${day}${isToday?' (วันนี้)':''}
+      </div>
+      ${periods.map(p => {
+        const {start, end} = periodStartEnd(p);
+        const isCurr = isToday && nm >= start && nm < end;
+        return `<div class="sched-row ${p.type==='homeroom'?'homeroom':''} ${p.type==='break'?'break-row':''}"
+          style="${isCurr?'border-color:var(--accent);background:rgba(122,162,247,0.07);':''}">
+          <div class="sched-time" style="${isCurr?'color:var(--accent);font-weight:700;':''}">
+            ${isCurr?'▶ ':''}${p.time}
+          </div>
+          <div class="sched-content">
+            <div class="sched-sub" style="${isCurr?'color:var(--accent);':''}">${p.sub}</div>
+            ${p.teacher?`<div class="sched-teacher">${p.teacher}</div>`:''}
+            ${p.room?`<div class="sched-room">ห้อง ${p.room}</div>`:''}
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }).join('');
+}
+renderSchedule();
+// Re-render schedule page every minute too (so ▶ moves to next period)
+setInterval(renderSchedule, 60000);
+
+// ─── URGENCY CALC ───
+function getUrgency(dueStr) {
+  if (!dueStr) return 'ok';
+  const diff = (new Date(dueStr) - new Date()) / 86400000;
+  if (diff < 0) return 'urgent';
+  if (diff <= 2) return 'urgent';
+  if (diff <= 5) return 'soon';
+  return 'ok';
+}
+function daysLeft(dueStr) {
+  if (!dueStr) return '';
+  const diff = Math.ceil((new Date(dueStr) - new Date()) / 86400000);
+  if (diff < 0) return 'เลยกำหนด!';
+  if (diff === 0) return 'วันนี้!';
+  if (diff === 1) return 'พรุ่งนี้!';
+  return `อีก ${diff} วัน`;
+}
+
+// ─── STATS ───
+function updateStats() {
+  const pending = homeworks.filter(h => !h.done);
+  const urgent = pending.filter(h => getUrgency(h.due) === 'urgent').length;
+  const soon = pending.filter(h => getUrgency(h.due) === 'soon').length;
+  const done = homeworks.filter(h => h.done).length;
+  document.getElementById('stat-urgent').textContent = urgent;
+  document.getElementById('stat-soon').textContent = soon;
+  document.getElementById('stat-done').textContent = done;
+}
+
+// ─── UPCOMING ───
+function renderUpcoming() {
+  const list = document.getElementById('upcoming-list');
+  const pending = homeworks.filter(h => !h.done)
+    .sort((a,b) => new Date(a.due) - new Date(b.due))
+    .slice(0, 5);
+  if (!pending.length) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">🎉</div>ไม่มีงานค้าง!</div>';
+    return;
+  }
+  list.innerHTML = pending.map(h => {
+    const urg = getUrgency(h.due);
+    const colors = {urgent:'var(--red)',soon:'var(--yellow)',ok:'var(--green)'};
+    const bgs = {urgent:'rgba(247,118,142,0.1)',soon:'rgba(224,175,104,0.1)',ok:'rgba(158,206,106,0.08)'};
+    return `<div class="upcoming-item">
+      <div class="ui-badge" style="background:${bgs[urg]};color:${colors[urg]}">📋</div>
+      <div class="ui-info">
+        <div class="ui-title">${h.name}</div>
+        <div class="ui-sub">${h.subject||'ไม่ระบุวิชา'} • ${h.due||'ไม่ระบุวัน'}</div>
+      </div>
+      <div class="ui-due ${urg}" style="background:${bgs[urg]};color:${colors[urg]};border-radius:7px;padding:0.25rem 0.6rem;font-size:0.7rem;font-weight:700">${daysLeft(h.due)}</div>
+    </div>`;
+  }).join('');
+}
+
+// ─── HW RENDER ───
+function renderHW() {
+  const list = document.getElementById('hw-list');
+  let items = [...homeworks];
+  if (hwFilter === 'pending') items = items.filter(h => !h.done);
+  else if (hwFilter === 'done') items = items.filter(h => h.done);
+  else if (hwFilter === 'urgent') items = items.filter(h => !h.done && getUrgency(h.due)==='urgent');
+  else if (hwFilter === 'soon') items = items.filter(h => !h.done && getUrgency(h.due)==='soon');
+
+  items.sort((a,b) => {
+    if (a.done !== b.done) return a.done ? 1 : -1;
+    return new Date(a.due) - new Date(b.due);
+  });
+
+  if (!items.length) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">✨</div>ไม่มีงานในหมวดนี้</div>';
+    return;
+  }
+
+  list.innerHTML = items.map(h => {
+    const urg = h.done ? 'ok' : getUrgency(h.due);
+    const tagCls = h.done ? 'ok' : urg;
+    const tagText = h.done ? '✓ ส่งแล้ว' : daysLeft(h.due);
+    const imgHTML = h.images && h.images.length
+      ? `<img src="${h.images[0]}" class="hw-img-thumb" onclick="openLightbox('${h.images[0]}')" />`
+      : '';
+    return `<div class="hw-item ${h.done?'done-item':''}" data-urgency="${urg}" data-id="${h.id}">
+      <div class="hw-check" onclick="toggleHW(${h.id})">${h.done?'✓':''}</div>
+      <div class="hw-body">
+        <div class="hw-title">${h.name}</div>
+        <div class="hw-meta">
+          ${h.subject?`<span class="hw-subject">${h.subject.split(' ')[0]}</span>`:''}
+          <span class="hw-due-tag ${tagCls}">${tagText}</span>
+          ${h.due?`<span style="font-size:0.65rem;color:var(--muted)">${h.due}</span>`:''}
+        </div>
+        ${h.note?`<div class="hw-note">${h.note}</div>`:''}
+      </div>
+      ${imgHTML}
+      <div class="hw-actions">
+        <button class="hw-del" onclick="deleteHW(${h.id})">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  updateStats();
+  renderUpcoming();
+}
+renderHW();
+
+function toggleHW(id) {
+  homeworks = homeworks.map(h => h.id===id ? {...h, done:!h.done} : h);
+  save(); renderHW();
+}
+function deleteHW(id) {
+  if (confirm('ลบงานนี้?')) {
+    homeworks = homeworks.filter(h => h.id!==id);
+    save(); renderHW();
+  }
+}
+function filterHW(f, btn) {
+  hwFilter = f;
+  document.querySelectorAll('.hw-filter').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderHW();
+}
+
+// ─── MODAL ───
+function openModal() {
+  pendingImages = [];
+  document.getElementById('img-preview').innerHTML = '';
+  document.getElementById('hw-name').value = '';
+  document.getElementById('hw-subject').value = '';
+  document.getElementById('hw-note').value = '';
+  document.getElementById('hw-due').value = '';
+  // default tomorrow
+  const tom = new Date(); tom.setDate(tom.getDate()+1);
+  document.getElementById('hw-due').value = tom.toISOString().split('T')[0];
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+function setPrio(btn) {
+  document.querySelectorAll('.pr-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedPrio = btn.dataset.p;
+}
+function previewImgs(input) {
+  const preview = document.getElementById('img-preview');
+  preview.innerHTML = '';
+  pendingImages = [];
+  [...input.files].forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      pendingImages.push(e.target.result);
+      const img = document.createElement('img');
+      img.src = e.target.result;
+      img.className = 'preview-img';
+      preview.appendChild(img);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+function saveHW() {
+  const name = document.getElementById('hw-name').value.trim();
+  if (!name) { alert('กรุณาใส่ชื่องาน'); return; }
+  const hw = {
+    id: Date.now(),
+    name,
+    subject: document.getElementById('hw-subject').value,
+    due: document.getElementById('hw-due').value,
+    note: document.getElementById('hw-note').value.trim(),
+    priority: selectedPrio,
+    images: [...pendingImages],
+    done: false,
+    created: new Date().toISOString()
+  };
+  homeworks.unshift(hw);
+  save(); renderHW(); closeModal();
+}
+
+// ─── LIGHTBOX ───
+function openLightbox(src) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox').classList.add('open');
+}
+
+// ─── SAVE ───
+function save() { localStorage.setItem('hw_data', JSON.stringify(homeworks)); }
+
+// ─── PAGES ───
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ─── REMINDERS (Browser Notification) ───
+function requestNotifPermission() {
+  if ('Notification' in window && Notification.permission === 'default') {
+    Notification.requestPermission();
+  }
+}
+requestNotifPermission();
+
+function checkReminders() {
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+  const now = new Date();
+  const h = now.getHours(), m = now.getMinutes();
+
+  // 7:00 morning reminder
+  if (h === 7 && m === 0) {
+    const pending = homeworks.filter(hw => !hw.done);
+    const urgent = pending.filter(hw => getUrgency(hw.due) === 'urgent');
+    let body = `มีงานค้าง ${pending.length} ชิ้น`;
+    if (urgent.length) body += ` 🔴 ด่วน ${urgent.length} ชิ้น!`;
+    new Notification('⏰ ตื่นแล้ว! เช็คงานวันนี้', { body, icon: '' });
+  }
+
+  // 2-day before due reminder
+  homeworks.filter(hw => !hw.done && hw.due).forEach(hw => {
+    const diff = Math.ceil((new Date(hw.due) - now) / 86400000);
+    if ((diff === 2 || diff === 1) && h === 18 && m === 0) {
+      new Notification(`📚 อย่าลืม! "${hw.name}"`, {
+        body: `${diff===1?'พรุ่งนี้':'อีก 2 วัน'}ต้องส่ง • ${hw.subject||''}`,
+      });
+    }
+  });
+}
+setInterval(checkReminders, 60000);
+
+// ─── PWA SERVICE WORKER ───
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  });
+}
+
+// close modal on overlay click
+document.getElementById('modal-overlay').addEventListener('click', function(e){
+  if (e.target === this) closeModal();
+});
+</script>
+</body>
+</html>
